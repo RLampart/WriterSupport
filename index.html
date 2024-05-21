@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Editor</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="scripts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/7.0.1/docx.min.js"></script>
+</head>
+<body>
+    <div class="editor-container">
+        <div class="toolbar">
+            <button onclick="execCmd('bold')"><b>B</b></button>
+            <button onclick="execCmd('italic')"><i>I</i></button>
+            <button onclick="execCmd('underline')"><u>U</u></button>
+            <button onclick="execCmd('justifyLeft')">Left</button>
+            <button onclick="execCmd('justifyCenter')">Center</button>
+            <button onclick="execCmd('justifyRight')">Right</button>
+            <button onclick="execCmd('insertUnorderedList')">UL</button>
+            <button onclick="execCmd('insertOrderedList')">OL</button>
+            <button onclick="execCmd('createLink', prompt('Enter the link here:','http://'))">Link</button>
+            <button onclick="execCmd('unlink')">Unlink</button>
+            <button onclick="saveDoc()">Save</button>
+            <button onclick="loadDoc()">Load</button>
+            <input onclick = "readDoc()" type="file" id="fileInput" style="display: none;">
+        </div>
+        <div id="editor" contenteditable="true"></div>
+    </div>
+    
+</body>
+</html>
