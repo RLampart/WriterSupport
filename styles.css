@@ -1,16 +1,32 @@
 body {
     font-family: Arial, sans-serif;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: space-evenly;
+    align-items: flex-start;
     height: 100vh;
     margin: 0;
+    margin-top: 5%;
     background-color: #f0f0f0;
+}
+
+aside {
+    background-color: #a9e639;
+    padding: 0% 2% 2%;
+    margin-top: 5%;
+    max-width: 10%;
+    border-style: solid;
+    border-width: thin;
+    border-color: black;
+}
+
+.highlight {
+    background-color: yellow; /* Highlight color */
 }
 
 .editor-container {
     width: 80%;
     max-width: 800px;
+    margin: 5%;
     background: white;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
