@@ -99,7 +99,6 @@ def search_term():
     document = content['doc']
     term = content['term']
     document,tfidf_matrixa = load(document)
-    print(document[5])
     query_vectora = vectorizer.transform([term])
     #query_vectorb = embed([term])
 
@@ -114,16 +113,12 @@ def search_term():
     # Print the sorted document indices and their similarity scores
     results = []
     for idx in sorted_indices:
-        if cosine_similarities[idx][0] >= 0.1:
+        if cosine_similarities[idx][0] > 0:
            results.append(f"Paragraph {idx[0]+1}: {document[idx[0]]} (Score: {cosine_similarities[idx][0]})")
         else:
            break
     results.append(len(document))
     return make_response(results,200)
-
-
-# Example search term
-# search_term("my way")
 
 if __name__ == '__main__':
     app.run(debug = True, port=8080)

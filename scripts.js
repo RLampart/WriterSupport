@@ -1,13 +1,12 @@
 document.addEventListener("DOMContentLoaded",function ()
 {
-    const input = document.getElementById('fileInput');
-    const aside = document.getElementsByTagName('aside')[0];
     const content = document.getElementById('editor');
     content.addEventListener('keypress',(KeyboardEvent) => reference());
 });
 function execCmd(command, value = null) {
     document.execCommand(command, false, value);
 }
+
 function saveDoc() {
    content = document.getElementById('editor').innerHTML;
    const text = content.innerText;
@@ -57,14 +56,6 @@ function readDoc() {
         } catch (error) {
             console.log();
         }
-        // if (file) {
-        //     reader = new FileReader();
-        //     text = await file;
-        //     reader.addEventListener("load", () => {
-        //         content.innerText = reader.result;
-        //       }, false);
-        //     reader.readAsText(text);
-        // } 
     });}
 
 function unhighlightEntries(){   
@@ -78,36 +69,40 @@ function unhighlightEntries(){
 
 function updateAside(results, search,len){
     const aside = document.getElementById('results');
-    choices = document.getElementsByTagName('p');
-    count = 0;
-    total = results.pop()-1;
-    aside.innerText = search.slice(0,60);
+    editor = document.getElementById('editor');
+    children = editor.childNodes;
+    choices = []
+    for (child of children){
+        if (child.innerText!='\n'){
+            choices.push(child);
+        }
+    }
+    total = results.pop();
+    aside.innerText = search.slice(0,60) + '...';
     print = '\n';
     for (r of results){
-         if (count==10){
-            break;
-         }
          r0 = r.split(':');
          numbers = r0[0].split(' ');
-         num = numbers[1]-1;
-         if (num >= total-len){
-            console.log(num,total,len)
-            para = choices[total-num].innerText;
+         num = numbers[1];
+         if (num >= total-len+1){
+            para = choices[num-(total-len+1)].innerText;
+            console.log(num-(total-len+1),para);
             r1 = r0[1].split('(');
             r3 = '(' + r1[1] + ': ' + r0[2].slice(0,8) + '])';
             if (para.length>100){
                 para = para.slice(0,100) + '...';
             }
             r2 = r0[0]+': '+ para + ' '+ r3;
-            choices[total-num].classList.add("highlight");
+            choices[num-(total-len+1)].classList.add("highlight");
+	       // print += r2;
+            //print += '\n';
          }
          else{
-            r2 = 'Patagraph '+num+': Refer to document';
+            r2 = 'Paragraph '+num+': Refer to document';
          }
          
          print += r2;
          print += '\n';
-         count ++;
     }
     aside.innerText += print;
 }
