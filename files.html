@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Editor</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="files.js"></script>
+</head>
+<body>
+    <div class="filelist container">
+        <h2>Loaded Files</h2>
+        <div id="files">
+
+        </div>
+        <label for="fileInput"><h4>Add File</h4></label>
+        <input onchange = "sendDoc()" type="file" id="fileInput" 
+        accept=".doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.pdf"/> 
+        <button onclick="home()">Back</button> 
+    </div>
+    
+</body>
+</html>

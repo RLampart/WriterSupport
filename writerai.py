@@ -64,11 +64,13 @@ def fullload():
     docx_files = [file for file in files if file.endswith('.docx')]
     doc_text = ''
     for doc in docx_files:
+        doc = os.path.join('./files', doc)
         doc_text += read_doc_file(doc)
         doc_text += '\n'
     pdf_files = [file for file in files if file.endswith('.pdf')]
     pdf_text = ''
     for pdf in pdf_files:
+        pdf = os.path.join('./files', pdf)
         pdf += read_pdf_file(pdf)
         pdf += '\n'
     return doc_text+pdf_text
@@ -83,12 +85,32 @@ def load(document):
     #tfidf_matrixb = embed(document)
     return rdoc,tfidf_matrixa#, tfidf_matrixb
 
-@app.route('/upload', methods=['POST'])
+@app.route('/v1/upload', methods=['POST'])
 def upload():
     content = request.files['files']
     filename = secure_filename(content.filename)
     content.save(os.path.join('./files', filename))
-    return make_response("Received",200)
+    return make_response({"msg":"File Received"},201)
+
+@app.route('/v1/removeDoc', methods=['POST'])
+def remove():
+    content = request.json['file']
+    path = os.path.join('./files', content)
+    if os.path.exists(path):
+       os.remove(path)
+       msg = content+" has been deleted"
+    else:
+       msg = content+" does not exist"
+    return make_response({"msg":msg},200)
+
+@app.route('/v1/files', methods=['GET'])
+def get_files():
+    rootdir = os.getcwd()
+    files = os.listdir(rootdir+'/files')
+    docx_files = [file for file in files if file.endswith('.docx')]
+    pdf_files = [file for file in files if file.endswith('.pdf')]
+    filelist = docx_files+pdf_files
+    return make_response(filelist,200)
     
 
 # Function to search for a term in the TF-IDF matrix

@@ -29,34 +29,10 @@ function saveDoc() {
    URL.revokeObjectURL(url);
 }
 
-function loadDoc() {
-    input = document.getElementById('fileInput');
-    input.click(); 
+function openDocs() {
+    location.assign('files.html');
 }
 
-function readDoc() {
-    input = document.getElementById('fileInput');
-    input.addEventListener("change", async () => {
-        const [file] = input.files;
-        const formData = new FormData();
-
-        formData.append('files', file);
-
-        try {
-            const response = await fetch('http://localhost:8080/upload', {
-                method: 'POST',
-                body: formData
-            });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok ' + response.statusText);
-            }
-
-            const result = await response.json();
-        } catch (error) {
-            console.log();
-        }
-    });}
 
 function unhighlightEntries(){   
     choices = document.getElementsByTagName('p');
@@ -70,6 +46,12 @@ function unhighlightEntries(){
 function updateAside(results, search,len){
     const aside = document.getElementById('results');
     editor = document.getElementById('editor');
+    child = editor.firstChild;
+    if (child.innerText == undefined){
+        const sp1 = document.createElement("span");
+        sp1.textContent = child.nodeValue;
+        editor.replaceChild(sp1,child);
+    }
     children = editor.childNodes;
     choices = []
     for (child of children){
@@ -85,17 +67,15 @@ function updateAside(results, search,len){
          numbers = r0[0].split(' ');
          num = numbers[1];
          if (num >= total-len+1){
-            para = choices[num-(total-len+1)].innerText;
-            console.log(num-(total-len+1),para);
+            index = num-(total-len+1);
+            para = choices[index].innerText;
             r1 = r0[1].split('(');
             r3 = '(' + r1[1] + ': ' + r0[2].slice(0,8) + '])';
             if (para.length>100){
                 para = para.slice(0,100) + '...';
             }
             r2 = r0[0]+': '+ para + ' '+ r3;
-            choices[num-(total-len+1)].classList.add("highlight");
-	       // print += r2;
-            //print += '\n';
+            choices[index].classList.add("highlight");
          }
          else{
             r2 = 'Paragraph '+num+': Refer to document';

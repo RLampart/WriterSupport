@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Word Editor</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="scripts.js"></script>
+    <script src="editor.js"></script>
 </head>
 <body>
-    <div class="editor-container">
+    <div class="container">
         <div class="toolbar">
+            <button onclick="openDocs()">Files</button>
             <button onclick="execCmd('bold')"><b>B</b></button>
             <button onclick="execCmd('italic')"><i>I</i></button>
             <button onclick="execCmd('underline')"><u>U</u></button>
@@ -19,8 +20,6 @@
             <button onclick="execCmd('insertUnorderedList')">UL</button>
             <button onclick="execCmd('insertOrderedList')">OL</button>
             <button onclick="saveDoc()">Save</button>
-            <button onclick="loadDoc()">Load</button>
-            <input onclick = "readDoc()" type="file" id="fileInput" style="display: none;">
         </div>
         <div id="editor" contenteditable="true"></div>
     </div>
