@@ -21,7 +21,7 @@ async function addFiles(){
         }
     }else if (files.length==1){
         content.innerHTML += "<li>";
-        content.innerHTML += "<img src='x icon.png'  alt='close icon' onclick='removeDoc(' "+files+" ')/>";
+        content.innerHTML += `<img src='x icon.png'  alt='close icon' class='icon' onclick='removeDoc("${files}")' />`;
         content.innerHTML += "<span>"+files+"</span>";
         content.innerHTML += "</li>";
     }
