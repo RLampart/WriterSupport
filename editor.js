@@ -43,8 +43,15 @@ function unhighlightEntries(){
     }
 }
 
+function showPopup(text){
+    popup = document.getElementsByClassName('popuptext')[0];
+    popup.innerText = text;
+    popup.classList.toggle("show");
+}
+
 function updateAside(results, search,len){
-    const aside = document.getElementById('results');
+    const asidetop = document.getElementById('search');
+    const aside = document.getElementById('list');
     editor = document.getElementById('editor');
     child = editor.firstChild;
     if (child.innerText == undefined){
@@ -52,7 +59,7 @@ function updateAside(results, search,len){
         sp1.textContent = child.nodeValue;
         editor.replaceChild(sp1,child);
     }
-    children = editor.childNodes;
+    children = editor.children;
     choices = []
     for (child of children){
         if (child.innerText!='\n'){
@@ -60,15 +67,16 @@ function updateAside(results, search,len){
         }
     }
     total = results.pop();
-    aside.innerText = search.slice(0,60) + '...';
-    print = '\n';
+    asidetop.innerText = search.slice(0,60) + '...' + '\n';
     for (r of results){
+         element = document.createElement("li");
          r0 = r.split(':');
          numbers = r0[0].split(' ');
          num = numbers[1];
          if (num >= total-len+1){
             index = num-(total-len+1);
             para = choices[index].innerText;
+            console.log(index);
             r1 = r0[1].split('(');
             r3 = '(' + r1[1] + ': ' + r0[2].slice(0,8) + '])';
             if (para.length>100){
@@ -76,22 +84,26 @@ function updateAside(results, search,len){
             }
             r2 = r0[0]+': '+ para + ' '+ r3;
             choices[index].classList.add("highlight");
+            element.textContent = r2;
+            
          }
          else{
-            r2 = 'Paragraph '+num+': Refer to document';
+            r1 = r0[1].split('(');
+            r3 = '(' + r1[1] + ': ' + r0[2].slice(0,8) + '])';
+            element.innerHTML += `<a onclick ='showPopup("${r}")'>` + 'Paragraph '+num+': Refer to document ' + r3 + `</a>`;
          }
+        aside.appendChild(element);
          
-         print += r2;
-         print += '\n';
     }
-    aside.innerText += print;
 }
 
 async function reference(){
     if (event.key == 'Enter'){
         unhighlightEntries();
-        let aside = document.getElementById('results');
-        aside.innerText = '';
+        let asidetop = document.getElementById('search');
+        let aside = document.getElementById('list');
+        asidetop.innerHTML = '';
+        aside.innerHTML = '';
         content = document.getElementById('editor');
         text = content.innerText;
         format = content.innerHTML;

@@ -1,15 +1,10 @@
 import os
 import docx2txt
 import fitz
-#import tensorflow_hub as hub
-#import matplotlib.pyplot as plt
-#import pandas as pd
 import re
-#import seaborn as sns
-#import tensorflow as tf
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
-from flask import Flask, request, make_response, jsonify
+from flask import Flask, request, make_response
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 

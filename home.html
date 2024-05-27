@@ -8,6 +8,9 @@
     <script src="editor.js"></script>
 </head>
 <body>
+    <dialog id="popup" class="popup">
+        <span class="popuptext"></span>
+    </dialog>
     <div class="container">
         <div class="toolbar">
             <button onclick="openDocs()">Files</button>
@@ -26,6 +29,10 @@
     <aside>
         <h3>Related to:</h3>
         <div id="results">
+            <b id="search"></b>
+            <ul id="list">
+
+            </ul>
         </div>
     </aside>
     
