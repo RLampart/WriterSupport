@@ -67,7 +67,7 @@ function updateAside(results, search,len){
         }
     }
     total = results.pop();
-    asidetop.innerText = search.slice(0,60) + '...' + '\n';
+    asidetop.innerText = search.slice(0,60) + '...';
     for (r of results){
          element = document.createElement("li");
          r0 = r.split(':');
