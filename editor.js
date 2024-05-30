@@ -97,13 +97,6 @@ function updateAside(results, search,len){
             
          }
          else{
-            r1 = r0[1].split('(');
-            r3 = '(' + r1[1] + ': ' + r0[2].slice(0,8) + '])';
-          //  link = document.createElement('a');
-          //  link.onclick = () => showPopup(results,count);
-          //  link.innerText= first.slice(0,first.length-1)+': Refer to document (Score: ' + r0[r0.length-1];
-            //console.log(r3);
-            //element.appendChild(link);
             element.innerHTML += `<a href='#' onclick ='showPopup("${r}")'>` +first.slice(0,first.length-1)+': Refer to document (Score: ' + r0[r0.length-1] + `</a>`;
          }
         aside.appendChild(element);

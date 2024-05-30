@@ -24,6 +24,12 @@ def read_doc_file(file):
   text = docx2txt.process(file)
   return text
 
+def read_txt_file(file):
+  with open(file,'r') as f:   
+      text = f.read()
+      f.close()
+  return text
+
 def read_pdf_file(file):
     document = fitz.open(file)
     pdf_text = ""
@@ -71,6 +77,10 @@ def fullload():
     for pdf in pdf_files:
         pdf_file = os.path.join('./files', pdf)
         documents[pdf] = read_pdf_file(pdf_file)
+    txt_files = [file for file in files if file.endswith('.txt')]
+    for txt in txt_files:
+        txt_file = os.path.join('./files', txt)
+        documents[txt] = read_txt_file(txt_file)
     return documents
 
 
@@ -123,7 +133,8 @@ def get_files():
     files = os.listdir(rootdir+'/files')
     docx_files = [file for file in files if file.endswith('.docx')]
     pdf_files = [file for file in files if file.endswith('.pdf')]
-    filelist = docx_files+pdf_files
+    txt_files = [file for file in files if file.endswith('.txt')]
+    filelist = docx_files+pdf_files+txt_files
     return make_response(filelist,200)
     
 
