@@ -45,8 +45,16 @@ function unhighlightEntries(){
 
 function showPopup(text){
     popup = document.getElementsByClassName('popuptext')[0];
+    console.log(event.target);
     popup.innerText = text;
     popup.classList.toggle("show");
+}
+
+function removePopup(){
+    popup = document.getElementsByClassName('popuptext')[0];
+    if (popup.classList.contains('show')){
+        popup.classList.toggle('show');
+    }
 }
 
 function updateAside(results, search,len){
@@ -68,13 +76,14 @@ function updateAside(results, search,len){
     }
     total = results.pop();
     asidetop.innerText = search.slice(0,60) + '...';
+    var count = 0;
     for (r of results){
          element = document.createElement("li");
          r0 = r.split(':');
-         numbers = r0[0].split(' ');
-         num = numbers[1];
-         if (num >= total-len+1){
-            index = num-(total-len+1);
+         first = r0[0].split(' ');
+         num = first.pop();
+         if (first[0] =='Current' & first[1]=='Document'){
+            index = num-1;
             para = choices[index].innerText;
             console.log(index);
             r1 = r0[1].split('(');
@@ -90,9 +99,15 @@ function updateAside(results, search,len){
          else{
             r1 = r0[1].split('(');
             r3 = '(' + r1[1] + ': ' + r0[2].slice(0,8) + '])';
-            element.innerHTML += `<a onclick ='showPopup("${r}")'>` + 'Paragraph '+num+': Refer to document ' + r3 + `</a>`;
+          //  link = document.createElement('a');
+          //  link.onclick = () => showPopup(results,count);
+          //  link.innerText= first.slice(0,first.length-1)+': Refer to document (Score: ' + r0[r0.length-1];
+            //console.log(r3);
+            //element.appendChild(link);
+            element.innerHTML += `<a href='#' onclick ='showPopup("${r}")'>` +first.slice(0,first.length-1)+': Refer to document (Score: ' + r0[r0.length-1] + `</a>`;
          }
         aside.appendChild(element);
+        count++;
          
     }
 }
@@ -100,6 +115,7 @@ function updateAside(results, search,len){
 async function reference(){
     if (event.key == 'Enter'){
         unhighlightEntries();
+        removePopup();
         let asidetop = document.getElementById('search');
         let aside = document.getElementById('list');
         asidetop.innerHTML = '';
@@ -110,7 +126,7 @@ async function reference(){
         lines = text.split('\n');
         lines = lines.filter((x)=> x!='');
         sentence = lines.length;
-        if (sentence>1){
+        if (sentence>0){
             paper = lines.slice(0,sentence-1);
             paper = paper.join('\n');
             search = lines[sentence-1];

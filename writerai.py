@@ -37,13 +37,19 @@ def read_pdf_file(file):
     document.close()
     return pdf_text
 
-def pprocess(text):
-    txt = []
-    for t in text.split('\n'):
-        bin = re.sub(r'[^a-zA-Z0-9\s]', '', t)
-        if len(bin) > 0:
-            txt.append(bin.lower())
-    return txt
+def pprocess(document):
+    ptxt = []
+    odoc = {}
+    for key in document:
+        text = document[key]
+        otxt = []
+        for t in text.split('\n'):
+            bin = re.sub(r'[^a-zA-Z0-9\s]', '', t)
+            if len(bin) > 0:
+                ptxt.append(bin.lower())
+                otxt.append(t)
+        odoc[key] = otxt
+    return ptxt,odoc
 
 
 def cosine(u, v):
@@ -55,30 +61,43 @@ def cos(a,b):
 
 def fullload():
     rootdir = os.getcwd()
+    documents = {}
     files = os.listdir(rootdir+'/files')
     docx_files = [file for file in files if file.endswith('.docx')]
-    doc_text = ''
     for doc in docx_files:
-        doc = os.path.join('./files', doc)
-        doc_text += read_doc_file(doc)
-        doc_text += '\n'
+        doc_file = os.path.join('./files', doc)
+        documents[doc] = read_doc_file(doc_file)
     pdf_files = [file for file in files if file.endswith('.pdf')]
-    pdf_text = ''
     for pdf in pdf_files:
-        pdf = os.path.join('./files', pdf)
-        pdf += read_pdf_file(pdf)
-        pdf += '\n'
-    return doc_text+pdf_text
+        pdf_file = os.path.join('./files', pdf)
+        documents[pdf] = read_pdf_file(pdf_file)
+    return documents
 
 
 def load(document):
    # Build the TF-IDF matrix
     fdocument = fullload()
-    document = fdocument+'\n'+document
-    rdoc = pprocess(document)
-    tfidf_matrixa = vectorizer.fit_transform(rdoc)
+    fdocument['Current Document'] = document 
+    pdoc,odoc = pprocess(fdocument)
+    tfidf_matrixa = vectorizer.fit_transform(pdoc)
     #tfidf_matrixb = embed(document)
-    return rdoc,tfidf_matrixa#, tfidf_matrixb
+    return odoc,tfidf_matrixa#, tfidf_matrixb
+
+def get_range(docs):
+    lens = []
+    range = 0
+    for key in docs:
+        length = len(docs[key])
+        range += length 
+        lens.append((key,range))
+    return lens
+
+def find_doc(lens,idx):
+    count = 0
+    for length in lens:
+        if idx<length[1]:
+            return length[0],count-1
+        count += 1
 
 @app.route('/v1/upload', methods=['POST'])
 def upload():
@@ -115,7 +134,8 @@ def search_term():
     content = request.json
     document = content['doc']
     term = content['term']
-    document,tfidf_matrixa = load(document)
+    docs,tfidf_matrixa = load(document)
+    lens = get_range(docs)
     query_vectora = vectorizer.transform([term])
     #query_vectorb = embed([term])
 
@@ -130,8 +150,13 @@ def search_term():
     # Print the sorted document indices and their similarity scores
     results = []
     for idx in sorted_indices:
-        if cosine_similarities[idx][0] > 0:
-           results.append(f"Paragraph {idx[0]+1}: {document[idx[0]]} (Score: {cosine_similarities[idx][0]})")
+        if cosine_similarities[idx][0] > 0.1:
+           doc,prev = find_doc(lens,idx[0])
+           if prev<0:
+               num = idx[0]
+           else:
+               num = idx[0]-lens[prev][1]
+           results.append(f"{doc} Line {num+1}: {docs[doc][num]} (Score: {cosine_similarities[idx][0]})")
         else:
            break
     results.append(len(document))

@@ -7,6 +7,10 @@ function home(){
     location.assign('home.html');
 }
 
+function search(){
+    location.assign('search.html');
+}
+
 async function addFiles(){
     const content = document.getElementById('files');
     content.innerHTML = "";
