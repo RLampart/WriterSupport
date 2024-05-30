@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Editor</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="editor.js"></script>
+</head>
+<body class="editor">
+    <dialog id="popup" class="popup">
+        <span class="popuptext"></span>
+    </dialog>
+    <div class="container">
+        <div class="toolbar">
+            <button onclick="openDocs()">Files</button>
+            <button onclick="execCmd('bold')"><b>B</b></button>
+            <button onclick="execCmd('italic')"><i>I</i></button>
+            <button onclick="execCmd('underline')"><u>U</u></button>
+            <button onclick="execCmd('justifyLeft')">Left</button>
+            <button onclick="execCmd('justifyCenter')">Center</button>
+            <button onclick="execCmd('justifyRight')">Right</button>
+            <button onclick="execCmd('insertUnorderedList')">UL</button>
+            <button onclick="execCmd('insertOrderedList')">OL</button>
+            <button onclick="saveDoc()">Save</button>
+        </div>
+        <div id="editor" contenteditable="true"></div>
+    </div>
+    <aside>
+        <h3>Related to:</h3>
+        <div id="results">
+            <b id="search"></b>
+            <ul id="list">
+
+            </ul>
+        </div>
+    </aside>
+    
+</body>
+</html>

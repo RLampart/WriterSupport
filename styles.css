@@ -1,12 +1,65 @@
-body {
+body{
     font-family: Arial, sans-serif;
     display: flex;
-    justify-content: space-evenly;
-    align-items: flex-start;
-    height: 100vh;
-    margin: 0;
-    margin-top: 2%;
     background-color: #f0f0f0;
+}
+
+
+
+main{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  
+}
+
+.top{
+  background-color: burlywood;
+  min-height: 20%;
+}
+
+nav.top{
+  padding: 10px 0; /* Padding for spacing */
+  text-align: center;
+  width: 100%;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  padding: 14px 20px;
+  display: inline-block;
+}
+
+nav a:hover {
+  background-color: #575757; /* Change background on hover */
+}
+
+
+.banner {
+  text-align: center;
+  padding: 50px 20px; /* Padding for spacing */
+  background-color: #f4f4f4; /* Example background color */
+  color: #333; /* Text color */
+  border-bottom: 2px solid #ddd; /* Optional border for separation */
+}
+
+.banner h1 {
+  margin: 0;
+  font-size: 3em; /* Large font size for the title */
+}
+
+.banner p {
+  font-size: 1.2em; /* Slightly larger font size for the paragraph */
+  margin: 10px 0 0; /* Margin for spacing */
+}
+
+.editor{
+  justify-content: space-evenly;
+  align-items: flex-start;
+  height: 100vh;
+  margin: 0;
+  margin-top: 2%;
 }
 
 aside {

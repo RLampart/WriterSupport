@@ -7,6 +7,10 @@ function home(){
     location.assign('home.html');
 }
 
+function editor(){
+    location.assign('editor.html');
+}
+
 function search(){
     location.assign('search.html');
 }
