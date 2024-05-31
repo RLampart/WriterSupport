@@ -9,14 +9,18 @@ async function performSearch() {
         var result = await postData(json);
         console.log(result);
         total = result.pop();
-        list = document.createElement('ul');
-        for (r of result){
-            element = document.createElement("li");
-            element.textContent = r;
-            list.appendChild(element);
-            
+        if (result.length>0){
+            list = document.createElement('ul');
+            for (r of result){
+                element = document.createElement("li");
+                element.textContent = r;
+                list.appendChild(element);
+            }
+            results.appendChild(list);
+        }else{
+            results.innerText = 'No result found';
         }
-        results.appendChild(list);
+        
     }
 }
 

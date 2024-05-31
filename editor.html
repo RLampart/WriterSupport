@@ -7,34 +7,50 @@
     <link rel="stylesheet" href="styles.css">
     <script src="editor.js"></script>
 </head>
-<body class="editor">
-    <dialog id="popup" class="popup">
-        <span class="popuptext"></span>
-    </dialog>
-    <div class="container">
-        <div class="toolbar">
-            <button onclick="openDocs()">Files</button>
-            <button onclick="execCmd('bold')"><b>B</b></button>
-            <button onclick="execCmd('italic')"><i>I</i></button>
-            <button onclick="execCmd('underline')"><u>U</u></button>
-            <button onclick="execCmd('justifyLeft')">Left</button>
-            <button onclick="execCmd('justifyCenter')">Center</button>
-            <button onclick="execCmd('justifyRight')">Right</button>
-            <button onclick="execCmd('insertUnorderedList')">UL</button>
-            <button onclick="execCmd('insertOrderedList')">OL</button>
-            <button onclick="saveDoc()">Save</button>
+<body>
+    <main>
+        <div class="top">
+            <nav>
+                <b>WS</b>
+                <a href='home.html'>Home</a>
+                <a href='editor.html'>Word Editor</a>
+                <a href='files.html'>Files</a>
+                <a href='search.html'>Search</a>
+                <a href='#'>Contact Me</a>
+            </nav>
         </div>
-        <div id="editor" contenteditable="true"></div>
-    </div>
-    <aside>
-        <h3>Related to:</h3>
-        <div id="results">
-            <b id="search"></b>
-            <ul id="list">
-
-            </ul>
+        <div class="editor">
+            <dialog id="popup" class="popup">
+                <span class="popuptext"></span>
+            </dialog>
+            <div class="container">
+                <div class="toolbar">
+                    <button onclick="openDocs()">Files</button>
+                    <button onclick="execCmd('bold')"><b>B</b></button>
+                    <button onclick="execCmd('italic')"><i>I</i></button>
+                    <button onclick="execCmd('underline')"><u>U</u></button>
+                    <button onclick="execCmd('justifyLeft')">Left</button>
+                    <button onclick="execCmd('justifyCenter')">Center</button>
+                    <button onclick="execCmd('justifyRight')">Right</button>
+                    <button onclick="execCmd('insertUnorderedList')">UL</button>
+                    <button onclick="execCmd('insertOrderedList')">OL</button>
+                    <button onclick="saveDoc()">Save</button>
+                </div>
+                <div id="editor" contenteditable="true"></div>
+            </div>
+            <aside>
+                <h3>Related to:</h3>
+                <div id="results">
+                    <b id="search"></b>
+                    <ul id="list">
+        
+                    </ul>
+                </div>
+            </aside>
         </div>
-    </aside>
+        
+    </main>
+    
     
 </body>
 </html>

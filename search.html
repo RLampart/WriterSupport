@@ -7,16 +7,26 @@
     <link rel="stylesheet" href="styles.css">
     <script src="search.js"></script>
 </head>
-<body class="down">
+<body>
+ <main>
+    <div class="top">
+        <nav>
+            <b>WS</b>
+            <a href='home.html'>Home</a>
+            <a href='editor.html'>Word Editor</a>
+            <a href='files.html'>Files</a>
+            <a href='search.html'>Search</a>
+            <a href='#'>Contact Me</a>
+        </nav>
+    </div>
     <h1>Search Page</h1>
     <div class="search container">
         <input type="text" id="searchQuery" placeholder="Enter search term">
         <button onclick="performSearch()">Search</button>
-        <button onclick="openDocs()">Files</button>
     </div>
     
 
     <div id="results"></div>
-    
+   </main>
 </body>
 </html>
