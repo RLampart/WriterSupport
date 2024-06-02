@@ -49,8 +49,8 @@ async function removeDoc(filename){
         body: JSON.stringify({"file":filename})
       });
         const result = await response.json();
-        alert(result['msg']);
         addFiles();
+        alert(result['msg']);
   }
     
 }

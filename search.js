@@ -1,3 +1,13 @@
+document.addEventListener("DOMContentLoaded",function ()
+{
+    const query = document.getElementById('searchQuery');
+    query.addEventListener('keypress',(KeyboardEvent) => {
+        if (event.key == 'Enter'){
+            performSearch();
+        }
+    });
+});
+
 async function performSearch() {
     const query = document.getElementById('searchQuery').value.toLowerCase();
     const results = document.getElementById('results');

@@ -41,8 +41,9 @@ def read_pdf_file(file):
         pdf_text += page.get_text("text")
     # Close the document
     document.close()
-    pattern = r'(?<=\w)\n(?=\w)'
+    pattern = r"(?<=\w|,|\s)\n(?=\w|,)"
     pdf_text = re.sub(pattern,' ', pdf_text)
+    pdf_text = re.sub(r"\n●\n",'\n', pdf_text)
     return pdf_text
 
 def pprocess(document):
@@ -116,7 +117,7 @@ def upload():
     content = request.files['files']
     filename = secure_filename(content.filename)
     content.save(os.path.join('./files', filename))
-    return make_response({"msg":"File Received"},201)
+    return make_response({"msg":filename+" Received"},201)
 
 @app.route('/v1/removeDoc', methods=['POST'])
 def remove():
