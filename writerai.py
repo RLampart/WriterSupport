@@ -41,6 +41,8 @@ def read_pdf_file(file):
         pdf_text += page.get_text("text")
     # Close the document
     document.close()
+    pattern = r'(?<=\w)\n(?=\w)'
+    pdf_text = re.sub(pattern,' ', pdf_text)
     return pdf_text
 
 def pprocess(document):
