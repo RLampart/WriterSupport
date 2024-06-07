@@ -17,8 +17,6 @@ def upload():
     content = request.files['files']
     filename = secure_filename(content.filename)
     content.save(os.path.join('./files', filename))
-    tfidmatrix.matrix = None
-    tfidmatrix.load('')
     return make_response({"msg":filename+" Received"},201)
 
 @app.route('/v1/removeDoc', methods=['POST'])
@@ -28,8 +26,10 @@ def remove():
     if os.path.exists(path):
        os.remove(path)
        msg = content+" has been deleted"
-       tfidmatrix.matrix = None
-       tfidmatrix.load('')
+       if content in tfidmatrix.files:
+          tfidmatrix.matrix = None
+          tfidmatrix.files.remove(content)
+          tfidmatrix.text = None
     else:
        msg = content+" does not exist"
     return make_response({"msg":msg},200)
@@ -42,7 +42,19 @@ def get_files():
     pdf_files = [file for file in files if file.endswith('.pdf')]
     txt_files = [file for file in files if file.endswith('.txt')]
     filelist = docx_files+pdf_files+txt_files
-    return make_response(filelist,200)
+    return make_response({"files":filelist,"set":tfidmatrix.files},200)
+
+@app.route('/v1/files', methods=['POST'])
+def set_files():
+    content = request.json['files']
+    tfidmatrix.files = content
+    tfidmatrix.matrix = None
+    tfidmatrix.text = None
+    with open("files.txt","w") as f:
+         for file in content:
+             f.write(file+'\n')
+         f.close()
+    return make_response({"msg":"Files Set"},200)
     
 
 # Function to search for a term in the TF-IDF matrix
@@ -53,6 +65,8 @@ def search_term():
     document = content['doc']
     term = content['term']
     docs = tfidmatrix.load(document)
+    if docs == []:
+       return [0]
     lens = tfidmatrix.get_range(docs)
     query_vector = tfidmatrix.vectorizer.transform([term])
 

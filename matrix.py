@@ -7,11 +7,25 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 
 class Matrix():
     def __init__(self):
-        self.files = None
         self.matrix = None
         self.text = None
         self.origindoc = None
         self.vectorizer = TfidfVectorizer()
+        files = self.get_files()
+        if files == []:
+            self.files = None
+        else:
+            self.files = files
+
+    def get_files(self):
+        files = []
+        with open("files.txt","r") as f:
+            file = f.readline()
+            file = file[:-1]
+            if file.endswith(".pdf") or file.endswith(".docx") or file.endswith(".txt"):
+                files.append(file)
+            f.close()
+        return files 
 
     def read_doc_file(self,file):
         text = docx2txt.process(file)
@@ -40,9 +54,9 @@ class Matrix():
         return pdf_text
 
     def fullload(self):
+        documents = {}
         if self.files == None:
             rootdir = os.getcwd()
-            documents = {}
             files = os.listdir(rootdir+'/files')
             docx_files = [file for file in files if file.endswith('.docx')]
             for doc in docx_files:
@@ -91,6 +105,8 @@ class Matrix():
     def load(self,document):
     # Build the TF-IDF matrix
         fdocument = self.fullload()
+        if fdocument == {} and document == '':
+            return []
         fdocument['Current Document'] = document 
         pdoc,odoc = self.pprocess(fdocument)
         self.matrix = self.vectorizer.fit_transform(pdoc)

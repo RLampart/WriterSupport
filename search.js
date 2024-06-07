@@ -34,14 +34,6 @@ async function performSearch() {
     }
 }
 
-function openDocs() {
-    location.assign('files.html');
-}
-
-function home() {
-    location.assign('home.html');
-}
-
 
 async function postData(json) {
     url = 'http://localhost:8080/v1/references';
