@@ -25,7 +25,7 @@ async function addFiles(){
         }
     }else if (files.length==1){
         content.innerHTML += "<li>";
-        if (files in set)
+        if (set.includes(files[0]))
             content.innerHTML += `<input class="check" type='checkbox' checked="true" id="${files}">`;
         else
             content.innerHTML += `<input class="check" type='checkbox' id="${files}">`;

@@ -1,11 +1,9 @@
 import os
-import re
-import numpy as np
+from numpy import argsort
 from flask import Flask, request, make_response
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 from matrix import Matrix
-
 
 app = Flask(__name__)
 CORS(app) 
@@ -30,6 +28,7 @@ def remove():
           tfidmatrix.matrix = None
           tfidmatrix.files.remove(content)
           tfidmatrix.text = None
+          updateFiles(tfidmatrix.files)
     else:
        msg = content+" does not exist"
     return make_response({"msg":msg},200)
@@ -50,10 +49,7 @@ def set_files():
     tfidmatrix.files = content
     tfidmatrix.matrix = None
     tfidmatrix.text = None
-    with open("files.txt","w") as f:
-         for file in content:
-             f.write(file+'\n')
-         f.close()
+    updateFiles(content)
     return make_response({"msg":"Files Set"},200)
     
 
@@ -74,7 +70,7 @@ def search_term():
     cosine_similarities = tfidmatrix.cos(query_vector)
 
     # Get the indices of the documents sorted by similarity score (highest first)
-    sorted_indices = np.argsort(cosine_similarities, axis=0)[::-1]
+    sorted_indices = argsort(cosine_similarities, axis=0)[::-1]
 
     # Print the sorted document indices and their similarity scores
     results = []
@@ -90,6 +86,12 @@ def search_term():
            break
     results.append(len(document))
     return make_response(results,200)
+
+def updateFiles(files):
+    with open("files.txt","w") as f:
+         for file in files:
+             f.write(file+'\n')
+         f.close()
 
 if __name__ == '__main__':
     app.run(debug = True, port=8080)
