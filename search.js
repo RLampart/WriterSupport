@@ -16,8 +16,7 @@ async function performSearch() {
     if (query) {
         term = {'doc':'','term':query};
         json = JSON.stringify(term);
-        var result = await postData(json);
-        console.log(result);
+        let result = await postData(json);
         total = result.pop();
         if (result.length>0){
             list = document.createElement('ul');

@@ -45,7 +45,6 @@ function unhighlightEntries(){
 
 function showPopup(text){
     popup = document.getElementsByClassName('popuptext')[0];
-    console.log(event.target);
     popup.innerText = text;
     popup.classList.toggle("show");
 }
@@ -76,8 +75,7 @@ function updateAside(results, search,len){
     }
     total = results.pop();
     asidetop.innerText = search.slice(0,60) + '...';
-    var count = 0;
-    for (r of results){
+    for (let r of results){
          element = document.createElement("li");
          r0 = r.split(':');
          first = r0[0].split(' ');
@@ -97,10 +95,13 @@ function updateAside(results, search,len){
             
          }
          else{
-            element.innerHTML += `<a href='#' onclick ='showPopup("${r}")'>` +first.slice(0,first.length-1)+': Refer to document (Score: ' + r0[r0.length-1] + `</a>`;
+            link = document.createElement("a");
+            link.href = "#";
+            link.onclick = ()=>{showPopup(r.toString())};
+            link.innerText = first.slice(0,first.length-1)+': Refer to document (Score: ' + r0[r0.length-1];
+            element.appendChild(link);
          }
         aside.appendChild(element);
-        count++;
          
     }
 }
