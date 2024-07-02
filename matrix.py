@@ -52,6 +52,16 @@ class Matrix():
         pdf_text = re.sub(pattern,' ', pdf_text)
         pdf_text = re.sub(r"\n●\n",'\n', pdf_text)
         return pdf_text
+    
+    def read(self,file):
+        if file.endswith('.docx'):
+            return self.read_doc_file(file)
+        elif file.endswith('.pdf'):
+            return self.read_pdf_file(file)
+        elif file.endswith('.txt'):
+            return self.read_txt_file(file)
+        else:
+            return "Error!"
 
     def fullload(self):
         documents = {}

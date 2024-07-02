@@ -9,6 +9,19 @@ app = Flask(__name__)
 CORS(app) 
 tfidmatrix = Matrix()
 
+@app.route('/v1/read', methods=['POST'])
+def read():
+    content = request.files['files']
+    if content:
+        filename = content.filename
+        name = secure_filename(filename)
+        path = os.path.join('./temp', name)
+        content.save(path)
+        text = tfidmatrix.read(path)
+        text = text.replace('\n', '<br>')
+        os.remove(path)
+        return make_response({'text': text,"msg":filename+" Loaded"},200)
+    return make_response({"msg":filename+" Failed to Load"},400)
 
 @app.route('/v1/upload', methods=['POST'])
 def upload():

@@ -29,6 +29,12 @@ function saveDoc() {
    URL.revokeObjectURL(url);
 }
 
+async function loadDoc() {
+    input = document.getElementById('fileInput');
+    input.click();
+   
+ }
+
 function openDocs() {
     location.assign('files.html');
 }
@@ -98,7 +104,7 @@ function updateAside(results, search,len){
             link = document.createElement("a");
             link.href = "#";
             link.onclick = ()=>{showPopup(r.toString())};
-            link.innerText = first.slice(0,first.length-1)+': Refer to document (Score: ' + r0[r0.length-1];
+            link.innerText = first.slice(0,first.length-1)+ ' ' + num+ ': Refer to document (Score: ' + r0[r0.length-1];
             element.appendChild(link);
          }
         aside.appendChild(element);
@@ -144,6 +150,32 @@ async function postData(json) {
     });
     return response.json();
   }
+
+  async function sendDoc() {
+    input = document.getElementById('fileInput');
+    const [file] = input.files;
+    const formData = new FormData();
+
+    formData.append('files', file);
+
+    try {
+        const response = await fetch('http://localhost:8080/v1/read', {
+            method: 'POST',
+            body: formData
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+
+        const result = await response.json();
+        let content = document.getElementById('editor');
+        content.innerHTML = result['text'];
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 
 
 

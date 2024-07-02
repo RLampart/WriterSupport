@@ -35,6 +35,9 @@
                     <button onclick="execCmd('insertUnorderedList')">UL</button>
                     <button onclick="execCmd('insertOrderedList')">OL</button>
                     <button onclick="saveDoc()">Save</button>
+                    <button onclick="loadDoc()">Load</button>
+                    <input onchange = "sendDoc()" hidden="true" type="file" id="fileInput" 
+                    accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.pdf,.txt"/>         
                 </div>
                 <div id="editor" contenteditable="true"></div>
             </div>
