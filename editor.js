@@ -170,7 +170,14 @@ async function postData(json) {
 
         const result = await response.json();
         let content = document.getElementById('editor');
-        content.innerHTML = result['text'];
+        text = result['text'].filter((x)=> x!='');
+        lines = '';
+        for (t of text){
+            lines += '<p>';
+            lines += t;
+            lines += '</p>';
+        }
+        content.innerHTML = lines;
     } catch (error) {
         console.log(error);
     }
