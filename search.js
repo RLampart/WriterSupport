@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded",function ()
 });
 
 async function performSearch() {
-    const query = document.getElementById('searchQuery').value.toLowerCase();
+    let query = document.getElementById('searchQuery').value.toLowerCase();
     const results = document.getElementById('results');
     results.innerHTML = ''; // Clear previous results
 
@@ -17,6 +17,8 @@ async function performSearch() {
         term = {'doc':'','term':query};
         json = JSON.stringify(term);
         let result = await postData(json);
+        if (result == 'Error')
+            return;
         total = result.pop();
         if (result.length>0){
             list = document.createElement('ul');
@@ -36,12 +38,19 @@ async function performSearch() {
 
 async function postData(json) {
     url = 'http://localhost:8080/v1/references';
-    const response = await fetch(url, {
+    try {
+      const response = await fetch(url, {
       method: 'POST', 
       headers: {
         'Content-Type': 'application/json'
       },
       body: json
     });
-    return response.json();
+    
+      return response.json();
+    } catch (error) {
+      console.log(error);
+      alert("API Error!");
+      return "Error";
+    }
   }

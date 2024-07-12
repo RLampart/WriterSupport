@@ -4,13 +4,10 @@ body{
     background-color: #f0f0f0;
 }
 
-
-
 main{
   display: flex;
   flex-direction: column;
   width: 100%;
-  
 }
 
 .top{
@@ -65,7 +62,6 @@ nav b{
   align-items: flex-start;
   height: 100vh;
   margin: 0;
-
 }
 
 aside {
@@ -179,8 +175,6 @@ li {
   display: flex;
   flex-direction: column;
 }
-
-
 
 .container {
     width: 80%;

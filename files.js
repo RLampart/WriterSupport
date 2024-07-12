@@ -7,8 +7,10 @@ async function addFiles(){
     const content = document.getElementById('files');
     content.innerHTML = "";
     data = await getData();
-    files = data['files'];
-    set = data['set'];
+    if (data == 'Error')
+        return;
+    let files = data['files'];
+    let set = data['set'];
     if (set==null)
         set = [];
     content.innerHTML += "<ul>";
@@ -40,25 +42,32 @@ async function addFiles(){
 async function removeDoc(filename){
     choice = confirm(`Remove ${filename}?`);
     if (choice){
-        url = 'http://localhost:8080/v1/removeDoc';
-        const response = await fetch(url, {
-        method: 'POST', 
-        headers: {
-        'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({"file":filename})
-      });
-        const result = await response.json();
-        addFiles();
-        alert(result['msg']);
+        try {
+            url = 'http://localhost:8080/v1/removeDoc';
+            const response = await fetch(url, {
+            method: 'POST', 
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({"file":filename})
+        });
+            let result = await response.json();
+            addFiles();
+            alert(result['msg']);
+        } catch (error) {
+            console.log(error);
+            alert("API Error!");
+            return "Error";
+        }
+        
   }
     
 }
 
 async function sendDoc() {
-        input = document.getElementById('fileInput');
-        const [file] = input.files;
-        const formData = new FormData();
+        const input = document.getElementById('fileInput');
+        let [file] = input.files;
+        let formData = new FormData();
 
         formData.append('files', file);
 
@@ -77,35 +86,51 @@ async function sendDoc() {
             addFiles();
         } catch (error) {
             console.log(error);
+            alert("API Error!");
+            return "Error";
         }
     }
 
 async function setFiles() {
-    var files = [];
-    boxes = document.getElementsByClassName("check");
+    let files = [];
+    const boxes = document.getElementsByClassName("check");
     for (box of boxes){
         if (box.checked == true)
             files.push(box.id);
     }
     files = JSON.stringify({"files":files});
-    url = 'http://localhost:8080/v1/files';
-    const response = await fetch(url, {
-        method: 'POST', 
-        headers: {
-            'Content-Type': 'application/json'
-          },
-        body: files
-    });
-    alert("Files Set");
-    return response.json();
+    try {
+        url = 'http://localhost:8080/v1/files';
+        const response = await fetch(url, {
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: files
+        });
+        alert("Files Set");
+        return response.json();
+    } catch (error) {
+        console.log(error);
+        alert("API Error!");
+        return "Error";
+    }
+    
 }
 
 async function getData() {
-    url = 'http://localhost:8080/v1/files';
-    const response = await fetch(url, {
-      method: 'GET', 
-    });
-    return response.json();
+    try {
+        url = 'http://localhost:8080/v1/files';
+        const response = await fetch(url, {
+        method: 'GET', 
+        });
+        return response.json();
+    } catch (error) {
+        console.log(error);
+        alert("API Error!");
+        return "Error";
+    }
+    
   }
 
 
