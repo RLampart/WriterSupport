@@ -107,10 +107,23 @@ class Matrix():
             for t in text.split('\n'):
                 bin = re.sub(r'[^a-zA-Z0-9\s]', '', t)
                 if len(bin) > 0:
+                    bin = self.removeStop(bin)
                     ptxt.append(bin.lower())
                     otxt.append(t)
             odoc[key] = otxt
         return ptxt,odoc
+    
+    def removeStop(self,term):
+        with open("stop.txt","r") as f:
+            stop = f.read().split(',')
+            f.close()
+        bin = ''
+        for word in term.split(' '):
+            if word.lower() not in stop:
+                bin += word + ' '
+        if len(bin) > 0:
+            return bin[:-1]
+        return term
     
     def load(self,document):
     # Build the TF-IDF matrix

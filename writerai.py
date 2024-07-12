@@ -11,14 +11,14 @@ tfidmatrix = Matrix()
 
 @app.route('/v1/read', methods=['POST'])
 def read():
-    content = request.files['files']
+    content = request.files['file']
     if content:
         filename = content.filename
         name = secure_filename(filename)
         path = os.path.join('./temp', name)
         content.save(path)
         text = tfidmatrix.read(path)
-        text = text.replace('\n', '<br>')
+        text = text.split('\n')
         os.remove(path)
         return make_response({'text': text,"msg":filename+" Loaded"},200)
     return make_response({"msg":filename+" Failed to Load"},400)
@@ -26,9 +26,11 @@ def read():
 @app.route('/v1/upload', methods=['POST'])
 def upload():
     content = request.files['files']
-    filename = secure_filename(content.filename)
-    content.save(os.path.join('./files', filename))
-    return make_response({"msg":filename+" Received"},201)
+    if content:
+        filename = secure_filename(content.filename)
+        content.save(os.path.join('./files', filename))
+        return make_response({"msg":filename+" Received"},201)
+    return make_response({"msg":filename+" Failed to Load"},400)
 
 @app.route('/v1/removeDoc', methods=['POST'])
 def remove():
@@ -59,11 +61,13 @@ def get_files():
 @app.route('/v1/files', methods=['POST'])
 def set_files():
     content = request.json['files']
-    tfidmatrix.files = content
-    tfidmatrix.matrix = None
-    tfidmatrix.text = None
-    updateFiles(content)
-    return make_response({"msg":"Files Set"},200)
+    if type(content) == list:
+        tfidmatrix.files = content
+        tfidmatrix.matrix = None
+        tfidmatrix.text = None
+        updateFiles(content)
+        return make_response({"msg":"Files Set"},200)
+    return make_response({"msg":"Incorrect Format"},400)
     
 
 # Function to search for a term in the TF-IDF matrix
